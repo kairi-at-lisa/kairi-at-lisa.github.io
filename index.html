@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>家具箱計算機</title>
+<script type="text/javascript">
+	/*
+	 * 家具箱を開ける
+	 * @param remain コイン数残り
+	 * @param coin １箱開けた時の取得コイン量
+	 * @param count 家具箱保持数
+	 * @return コイン数残り、開けた数文言
+	 */
+	function open(remain, coin, count) {
+		var cnt_half = Math.floor(count/2)
+		var cnt_min = parseInt(edit_form.cnt_min.value)
+		var all = coin * count
+		var half = coin * cnt_half
+		var min = coin * cnt_min
+
+		if (remain >= all) {
+			return [(remain-all), `全部 (${all})`]
+		}
+		if (remain >= half) {
+			var cnt = Math.floor((remain-half)/min)
+			min = coin * cnt
+			if (cnt > 0) {
+				return [remain-half-min, `半分、${cnt_min}回開けるを${cnt}回 (${half+min})`]
+			} else {
+				return [remain-half, `半分 (${half})`]
+			}
+		}
+
+		var cnt = Math.floor(remain/min)
+		min = coin * cnt
+		return [remain-min, `${cnt_min}回開けるを${cnt}回 (${half+min})`]
+	}
+
+	/*
+	 * 計算処理メイン
+	 */
+    function Main(){
+    	var coin_max = parseInt(edit_form.coin_max.value)
+    	var coin_s = parseInt(edit_form.coin_s.value)
+    	var coin_m = parseInt(edit_form.coin_m.value)
+    	var coin_l = parseInt(edit_form.coin_l.value)
+    	var now = parseInt(edit_form.now.value)
+    	var now_s = parseInt(edit_form.now_s.value)
+    	var now_m = parseInt(edit_form.now_m.value)
+    	var now_l = parseInt(edit_form.now_l.value)
+
+    	var remain = coin_max - now
+
+    	var result = ""
+    	result += `最大 ${coin_max}コイン\n`
+    	result += `現在 ${now}コイン\n`
+    	result += `残り ${remain}コイン取得可能\n\n`
+
+    	ret_l = open(remain, coin_l, now_l)
+    	ret_m = open(ret_l[0], coin_m, now_m)
+    	ret_s = open(ret_m[0], coin_s, now_s)
+
+    	result += `家具箱(大)：${ret_l[1]}\n`
+    	result += `家具箱(中)：${ret_m[1]}\n`
+    	result += `家具箱(小)：${ret_s[1]}\n`
+    	result += `${remain-ret_s[0]}コイン取得`
+
+    	alert(result)
+    }
+</script>
+</head>
+ 
+<body>
+<form name="edit_form" action="Sample1.html">
+<table border="1">
+<tr><td>コイン最大所持量</td><td><input type="text" name="coin_max" value="200000" style="text-align: right;"></td></tr>
+<tr><td>家具箱(大)</td><td><input type="text" name="coin_l" value="700" style="text-align: right;"></td></tr>
+<tr><td>家具箱(中)</td><td><input type="text" name="coin_m" value="400" style="text-align: right;"></td></tr>
+<tr><td>家具箱(小)</td><td><input type="text" name="coin_s" value="200" style="text-align: right;"></td></tr>
+<tr><td>10個開ける</td><td><input type="text" name="cnt_min" value="10" style="text-align: right;"></td></tr>
+<tr><td colspan="2"></td></tr>
+<tr><td>コイン現在値</td><td><input type="text" name="now" value="0" style="text-align: right;"></td></tr>
+<tr><td>家具箱(大)個数</td><td><input type="text" name="now_l" value="0" style="text-align: right;"></td></tr>
+<tr><td>家具箱(中)個数</td><td><input type="text" name="now_m" value="0" style="text-align: right;"></td></tr>
+<tr><td>家具箱(小)個数</td><td><input type="text" name="now_s" value="0" style="text-align: right;"></td></tr>
+<tr><td colspan="2" align="right"><input type="button" value="計算" onclick="Main()"></td></tr>
+</table>
+</form>
+</body>
+</html>
