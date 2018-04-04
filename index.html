@@ -63,7 +63,9 @@
     	result += `家具箱(大)：${ret_l[1]}\n`
     	result += `家具箱(中)：${ret_m[1]}\n`
     	result += `家具箱(小)：${ret_s[1]}\n`
-    	result += `${remain-ret_s[0]}コイン取得`
+    	result += `${remain-ret_s[0]}コイン取得\n\n`
+
+	result += `合計：${remain-ret_s[0]+now}`
 
     	alert(result)
     }
